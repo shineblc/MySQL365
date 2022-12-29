@@ -100,9 +100,9 @@ def main():
             f.write('** DATABASE    : ' + DB_BAK_INFO.dbname + '\n')
             f.write('** DATA_DATE   : ' + DATA_DATE + '\n')
             f.write('** RESULT(BAK) : ' + (
-                'succeed\n' if cmd_result[1] == 0 and os.path.getsize(backup_file) < 5242880 else 'failed\n'))
+                'succeed\n' if cmd_result[1] == 0 and os.path.getsize(backup_file) > 5242880 else 'failed\n'))
             # 验证低于5M的文件 视为备份失败，当然库很小也可以调整阀值
-            if cmd_result[1] == 0 and os.path.getsize(backup_file) < 5242880:
+            if cmd_result[1] == 0 and os.path.getsize(backup_file) > 5242880:
                 # 备份成功后删除近七天数据
                 print("备份成功")
                 dd_sql = 'find ' + conf.backup_path + ' -name' + ' dbbackup' + DB_BAK_INFO.dbname + '-' + '*' + '.sql' + ' -ctime +7 -exec rm {} \;';
